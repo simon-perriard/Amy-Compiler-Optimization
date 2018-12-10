@@ -1,0 +1,14 @@
+# sbt compilation output
+target/
+project/target
+# Compiler output and nodejs modules
+compiler/**/*.html
+compiler/**/*.wat
+compiler/**/*.wasm
+compiler/**/*.js
+compiler/node_modulesi
+compiler/package-lock.json
+# IntelliJ IDEA config files
+*/.idea
+# Archive files
+*.zip
