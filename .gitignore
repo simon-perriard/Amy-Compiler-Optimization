@@ -6,7 +6,7 @@ project/target
 **/*.wat
 **/*.wasm
 **/*.js
-node_modulesi
+node_modules
 package-lock.json
 # IntelliJ IDEA config files
 */.idea
