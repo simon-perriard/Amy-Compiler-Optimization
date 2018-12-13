@@ -34,6 +34,31 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
         writer.close()
     }
 
+    def parseDoc(doc: String): String = {
+
+      val (generalDoc, spec) = doc.span(p => p!= '@')
+
+      if(spec.isEmpty){ //no special instruction
+        return generalDoc
+      }
+
+
+      if(spec.startsWith("@param")){      //parameter description
+
+        val parameter =             //following string until whitespace is the name of the parameter (need to check coherence with function definition)
+
+        generalDoc+"\n\n"+"**"+parameter+"**"
+
+      }
+      else if(spec.startsWith("@return")){  //description of what is returned
+
+      }else if(spec.startsWith("@see")){  //ling to a class name (need to check)
+
+      }
+      else {    //not a valid instruction => not one of those (param,return,see)
+        generalDoc
+      }
+    }
 
     def funDocGen(funDef: N.FunDef): String = {
 
@@ -51,7 +76,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
       else{ //doc found. Parse it and insert it
 
-        val documentation = "TODO"
+        val documentation = parseDoc(doc.get)
 
         functionSig+"\n\n"+documentation
 
