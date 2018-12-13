@@ -9,6 +9,6 @@ project/target
 node_modules
 package-lock.json
 # IntelliJ IDEA config files
-*/.idea
+.idea
 # Archive files
 *.zip
