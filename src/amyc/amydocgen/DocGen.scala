@@ -13,7 +13,9 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
   def run(ctx: Context)(v: (S.Program, SymbolTable, N.Program)): (S.Program, SymbolTable) = {
     val (sProgram, table, nProgram) = v
 
-   nProgram.modules.foreach{  //generate doc for each module in the program
+    val modules = nProgram.modules
+
+    modules.foreach{  //generate doc for each module in the program
       m =>
         val writer = new PrintWriter(new File(m.name))   //create writer for the module's file
 
@@ -26,7 +28,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
 
        // val markdownText = functions.map(f => funDocGen(f._1.name,f._2)).fold(docHeader)(_+_) //generate markdown for each function
 
-        val markdownText = funDefs.map(d => funDocGen(d,m.name)).fold("")(_+_)
+        val markdownText = funDefs.map(d => funDocGen(d,m.name,modules.map(_.name))).fold("")(_+_)
 
         writer.write(markdownText)
 
@@ -80,7 +82,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
     }
 
-    def funDocGen(funDef: N.FunDef, moduleName: String): String = {
+    def funDocGen(funDef: N.FunDef, moduleName: String, modules: List[String]): String = {
 
       //does funDef.params.map(p => (name,p.tt)) work ???? instead of using paramNames....
       val args = funDef.paramNames.zip(funDef.params.map(p => p.tt)).map(e => e._1+" : "+e._2).fold("")(_+_)  //string for args with name and type
@@ -96,9 +98,9 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
       else{ //doc found. Parse it and insert it
 
-        val documentation = parseDoc(doc.get,,)(moduleName,funDef.name)
+        val documentation = parseDoc(doc.get,modules,funDef.paramNames)(moduleName,funDef.name)
 
-        functionSig+"\n\n"+documentation
+        functionSig+"\n\n"+documentation+"\n\n"
 
       }
     }
