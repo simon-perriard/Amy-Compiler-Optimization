@@ -196,7 +196,7 @@ object TypeChecker extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Prog
           //       by another type in your current set of constraints.
           expected match {
             case TypeVariable(varTypeId) =>
-              // replace all occurences of this TypeVariable by the found Type
+              // replace all occurrences of this TypeVariable by the found Type
               // and continue constraint solving
               solveConstraints(subst_*(more, varTypeId, found))
 

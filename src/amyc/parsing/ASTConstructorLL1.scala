@@ -4,6 +4,7 @@ package parsing
 import grammarcomp.parsing._
 import ast.NominalTreeModule._
 import Tokens._
+import amyc.ast.NominalTreeModule
 import amyc.utils.Positioned
 
 // Implements the translation from parse trees to ASTs for the LL1 grammar,
@@ -12,7 +13,34 @@ import amyc.utils.Positioned
 // override whatever has changed. You can look into ASTConstructor as an example.
 class ASTConstructorLL1 extends ASTConstructor {
 
-  // TODO: Override methods from ASTConstructor as needed
+  override def constructDef0(pTree: NodeOrLeaf[Token]): NominalTreeModule.ClassOrFunDef = {
+    pTree match {
+      case Node('AbstractClassDef ::= _, List(Leaf(abs), _, name)) =>
+        AbstractClassDef(constructName(name)._1).setPos(abs)
+      case Node('CaseClassDef ::= _, List(Leaf(cse), _, name, _, params, _, _, parent)) =>
+        CaseClassDef(
+          constructName(name)._1,
+          constructList(params, constructParam, hasComma = true).map(_.tt),
+          constructName(parent)._1
+        ).setPos(cse)
+      case Node('FunDef ::= _, List(Node('OptDoc ::= List(DOCSENT), List(Leaf(DOC(text)))), Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
+        FunDef(
+          constructName(name)._1,
+          constructList(params, constructParam, hasComma = true),
+          constructType(retType),
+          constructExpr(body),
+          Option(text)
+        ).setPos(df)
+      case Node('FunDef ::= _, List(Node('OptDoc ::= _, List(_)), Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
+        FunDef(
+          constructName(name)._1,
+          constructList(params, constructParam, hasComma = true),
+          constructType(retType),
+          constructExpr(body),
+          Option.empty
+        ).setPos(df)
+    }
+  }
 
   override def constructExpr(ptree: NodeOrLeaf[Token]): Expr = {
     ptree match {

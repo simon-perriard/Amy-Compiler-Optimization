@@ -9,6 +9,7 @@ import java.io.File
 // Transforms an iterator coming from scala.io.Source to a stream of (Char, Position),
 // then uses a functional approach to consume the stream.
 object Lexer extends Pipeline[List[File], Stream[Token]] {
+
   import Tokens._
 
   /** Maps a string s to the corresponding keyword,
@@ -16,23 +17,23 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
     */
   private def keywords(s: String): Option[Token] = s match {
     case "abstract" => Some(ABSTRACT())
-    case "Boolean"  => Some(BOOLEAN())
-    case "case"     => Some(CASE())
-    case "class"    => Some(CLASS())
-    case "def"      => Some(DEF())
-    case "else"     => Some(ELSE())
-    case "error"    => Some(ERROR())
-    case "extends"  => Some(EXTENDS())
-    case "false"    => Some(FALSE())
-    case "if"       => Some(IF())
-    case "Int"      => Some(INT())
-    case "match"    => Some(MATCH())
-    case "object"   => Some(OBJECT())
-    case "String"   => Some(STRING())
-    case "true"     => Some(TRUE())
-    case "Unit"     => Some(UNIT())
-    case "val"      => Some(VAL())
-    case _          => None
+    case "Boolean" => Some(BOOLEAN())
+    case "case" => Some(CASE())
+    case "class" => Some(CLASS())
+    case "def" => Some(DEF())
+    case "else" => Some(ELSE())
+    case "error" => Some(ERROR())
+    case "extends" => Some(EXTENDS())
+    case "false" => Some(FALSE())
+    case "if" => Some(IF())
+    case "Int" => Some(INT())
+    case "match" => Some(MATCH())
+    case "object" => Some(OBJECT())
+    case "String" => Some(STRING())
+    case "true" => Some(TRUE())
+    case "Unit" => Some(UNIT())
+    case "val" => Some(VAL())
+    case _ => None
   }
 
   private def lexFile(ctx: Context)(f: File): Stream[Token] = {
@@ -67,10 +68,10 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
       def nextChar = rest.head._1
 
       if (Character.isWhitespace(currentChar)) {
-        nextToken(stream.dropWhile{ case (c, _) => Character.isWhitespace(c) } )
+        nextToken(stream.dropWhile { case (c, _) => Character.isWhitespace(c) })
       } else if (currentChar == '/' && nextChar == '/') {
         // Single-line comment
-        nextToken(stream.dropWhile{ case (c, pos) => pos.line == currentPos.line && c != EndOfFile}) // skip all until the next line
+        nextToken(stream.dropWhile { case (c, pos) => pos.line == currentPos.line && c != EndOfFile }) // skip all until the next line
       } else if (currentChar == '/' && nextChar == '*') {
         // Multi-line comment
         checkMultiLineComment(stream.drop(2), currentPos)
@@ -83,10 +84,11 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
     @scala.annotation.tailrec
     def checkMultiLineComment(stream: Stream[(Char, Position)], currentPos: Position): (Token, Stream[Input]) = {
 
-      if(stream.isEmpty){//comment is never closed
+      if (stream.isEmpty) {
+        //comment is never closed
         ctx.reporter.fatal("Unclosed comment", currentPos)
         (BAD(), stream)
-      }else {
+      } else {
         val (currentChar, _) #:: rest = stream
 
         def nextChar = rest.head._1
@@ -112,6 +114,7 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
 
       // Returns input token with correct position and uses up one character of the stream
       def useOne(t: Token) = (t.setPos(currentPos), rest)
+
       // Returns input token with correct position and uses up two characters of the stream
       def useTwo(t: Token) = (t.setPos(currentPos), rest.tail)
 
@@ -136,26 +139,26 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
         case _ if Character.isDigit(currentChar) =>
           // Hint: Use a strategy similar to the previous example.
           // Make sure you fail for integers that do not fit 32 bits.
-          val (wordDigit, afterWord) = stream.span{ case (c, _) =>
+          val (wordDigit, afterWord) = stream.span { case (c, _) =>
             Character.isDigit(c)
           }
           val intLiteral = wordDigit.map(_._1).mkString
-          if(BigInt(intLiteral) > Integer.MAX_VALUE){ //check for size
+          if (BigInt(intLiteral) > Integer.MAX_VALUE) { //check for size
             ctx.reporter.error("value out of integer range", currentPos)
             (BAD().setPos(currentPos), afterWord)
-          }else{
+          } else {
             (INTLIT(intLiteral.toInt).setPos(currentPos), afterWord)
           }
-          // Doc
-          // Similar to String literal
+        // Doc
+        // Similar to String literal
         case '~' =>
-          val (docLetters, afterDoc) = stream.tail.span{ case (c, _) =>
+          val (docLetters, afterDoc) = stream.tail.span { case (c, _) =>
             c != '~'
           }
-          if (afterDoc.isEmpty){
+          if (afterDoc.isEmpty) {
             ctx.reporter.fatal("Unclosed doc", currentPos)
             (BAD().setPos(currentPos), afterDoc)
-          }else{
+          } else {
             val doc = docLetters.map(_._1).mkString
             (DOC(doc).setPos(currentPos), afterDoc.tail)
           }
@@ -163,13 +166,14 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
         case '"' =>
           //we consume the opening " with stream.tail
           // and consume the closing " with afterWord.tail because span will let it in afterWord
-          val (wordLetters, afterWord) = stream.tail.span{ case (c, _) =>
+          val (wordLetters, afterWord) = stream.tail.span { case (c, _) =>
             c != '"'
           }
-          if(afterWord.isEmpty || afterWord.head._2.line != currentPos.line){//String is never closed or is not closed on the same line
+          if (afterWord.isEmpty || afterWord.head._2.line != currentPos.line) {
+            //String is never closed or is not closed on the same line
             ctx.reporter.fatal("Unclosed string literal", currentPos)
             (BAD().setPos(currentPos), afterWord)
-          }else {
+          } else {
             val word = wordLetters.map(_._1).mkString
             (STRINGLIT(word).setPos(currentPos), afterWord.tail)
           }
@@ -199,7 +203,7 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
           nextChar match {
             case '&' => useTwo(AND())
             case _ => ctx.reporter.error("single '&'", currentPos)
-                      useOne(BAD())
+              useOne(BAD())
           }
 
         case '|' => //check for ||
