@@ -8,6 +8,7 @@ project/target
 **/*.js
 node_modules
 package-lock.json
+markdown
 # IntelliJ IDEA config files
 .idea
 # Archive files
