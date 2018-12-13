@@ -1,7 +1,7 @@
-object example1 {
+object Example3 {
 
 
-
+  ~this function does fast exp~
   def fastExp(base: Int, exp: Int, current: Int): Int = {
 
 
@@ -25,7 +25,7 @@ object example1 {
 
   }
 
-
+  ~this one does succ~
   def exp(number: Int, power: Int): Int = {fastExp(number,power,1)}
 
 
