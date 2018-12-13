@@ -68,8 +68,12 @@ object Tokens {
   // String literals
   case class STRINGLIT(value: String) extends Token with TerminalClass
 
+  // AmyDoc
+  case class DOC(value: String) extends Token with TerminalClass
+
   // These three tokens are meant to represent their respective category in the parser
   val IDSENT = ID("")
   val INTLITSENT = INTLIT(0)
-  val STRINGLITSENT = STRINGLIT("")  
+  val STRINGLITSENT = STRINGLIT("")
+  val DOCSENT = DOC("")
 }

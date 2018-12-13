@@ -9,8 +9,8 @@ import ast.{Identifier, NominalTreeModule => N, SymbolicTreeModule => S}
 // and returns a symbolic program, where all names have been resolved to unique Identifiers.
 // Rejects programs that violate the Amy naming rules.
 // Also populates and returns the symbol table.
-object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
-  def run(ctx: Context)(p: N.Program): (S.Program, SymbolTable) = {
+object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable, N.Program)] {
+  def run(ctx: Context)(p: N.Program): (S.Program, SymbolTable, N.Program) = {
     import ctx.reporter._
 
     // Step 0: Initialize symbol table
@@ -114,7 +114,7 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
     }.setPos(df)
 
     def transformFunDef(fd: N.FunDef, module: String): S.FunDef = {
-      val N.FunDef(name, params, retType, body) = fd
+      val N.FunDef(name, params, retType, body, doc) = fd
       val Some((sym, sig)) = table.getFunction(module, name)
 
       params.groupBy(_.name).foreach { case (name, ps) =>
@@ -136,7 +136,8 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
         sym,
         newParams,
         S.TypeTree(sig.retType).setPos(retType),
-        transformExpr(body)(module, (paramsMap, Map()))
+        transformExpr(body)(module, (paramsMap, Map())),
+        doc
       ).setPos(fd)
     }
 
@@ -304,7 +305,7 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
       }
     ).setPos(p)
 
-    (newProgram, table)
+    (newProgram, table, p)
 
   }
 }

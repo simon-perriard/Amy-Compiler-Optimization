@@ -146,6 +146,19 @@ object Lexer extends Pipeline[List[File], Stream[Token]] {
           }else{
             (INTLIT(intLiteral.toInt).setPos(currentPos), afterWord)
           }
+          // Doc
+          // Similar to String literal
+        case '~' =>
+          val (docLetters, afterDoc) = stream.tail.span{ case (c, _) =>
+            c != '~'
+          }
+          if (afterDoc.isEmpty){
+            ctx.reporter.fatal("Unclosed doc", currentPos)
+            (BAD().setPos(currentPos), afterDoc)
+          }else{
+            val doc = docLetters.map(_._1).mkString
+            (DOC(doc).setPos(currentPos), afterDoc.tail)
+          }
         // String literal
         case '"' =>
           //we consume the opening " with stream.tail

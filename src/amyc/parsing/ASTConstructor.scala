@@ -54,12 +54,21 @@ class ASTConstructor {
           constructList(params, constructParam, hasComma = true).map(_.tt),
           constructName(parent)._1
         ).setPos(cse)
+      case Node('FunDef ::= _, List(Leaf(DOC(text)), Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
+        FunDef(
+          constructName(name)._1,
+          constructList(params, constructParam, hasComma = true),
+          constructType(retType),
+          constructExpr(body),
+          Option(text)
+        ).setPos(df)
       case Node('FunDef ::= _, List(Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
         FunDef(
           constructName(name)._1,
           constructList(params, constructParam, hasComma = true),
           constructType(retType),
-          constructExpr(body)
+          constructExpr(body),
+          Option.empty
         ).setPos(df)
     }
   }
@@ -211,9 +220,9 @@ class ASTConstructor {
     * (COMMA(), t, ts) if there is a comma,
     * where t is the tree corresponding to the first element and ts to the rest.
     *
-    * @param ptree The input parse tree
+    * @param ptree       The input parse tree
     * @param constructor A transformer for an individual object
-    * @param hasComma Whether the elements of the list are separated by a COMMA()
+    * @param hasComma    Whether the elements of the list are separated by a COMMA()
     * @tparam A The type of List elements
     * @return A list of parsed elements of type A
     */
@@ -236,9 +245,9 @@ class ASTConstructor {
     * and (t, COMMA(), ts) if there is a comma,
     * where t is the tree corresponding to the first element and ts to the rest.
     *
-    * @param ptree The input parse tree
+    * @param ptree       The input parse tree
     * @param constructor A transformer for an individual object
-    * @param hasComma Whether the elements of the list are separated by a COMMA()
+    * @param hasComma    Whether the elements of the list are separated by a COMMA()
     * @tparam A The type of List elements
     * @return A list of parsed elements of type A
     */
@@ -254,7 +263,7 @@ class ASTConstructor {
 
   /** Optionally extract an element from a parse tree.
     *
-    * @param ptree The input parse tree
+    * @param ptree       The input parse tree
     * @param constructor The extractor of the element if it is present
     * @tparam A The type of the element
     * @return The element wrapped in Some(), or None if the production is empty.
@@ -273,7 +282,7 @@ class ASTConstructor {
     * and an operator (which will be ignored) followed by the element we need to extract
     * in case of Some.
     *
-    * @param ptree The input parse tree
+    * @param ptree       The input parse tree
     * @param constructor The extractor of the element if it is present
     * @tparam A The type of the element
     * @return The element wrapped in Some(), or None if the production is empty.

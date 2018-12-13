@@ -1,6 +1,5 @@
 lazy val amyc = (project in file("."))
   .disablePlugins(plugins.JUnitXmlReportPlugin)
-  .enablePlugins(StudentPlugin)
   .settings(
     name := "amyc",
 

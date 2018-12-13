@@ -87,7 +87,7 @@ trait TreeModule {
   trait Definition extends Tree { val name: Name }
   case class ModuleDef(name: Name, defs: List[ClassOrFunDef], optExpr: Option[Expr]) extends Definition
   trait ClassOrFunDef extends Definition
-  case class FunDef(name: Name, params: List[ParamDef], retType: TypeTree, body: Expr) extends ClassOrFunDef {
+  case class FunDef(name: Name, params: List[ParamDef], retType: TypeTree, body: Expr, doc: Option[String]) extends ClassOrFunDef {
     def paramNames = params.map(_.name)
   }
   case class AbstractClassDef(name: Name) extends ClassOrFunDef

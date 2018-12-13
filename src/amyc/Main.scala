@@ -5,8 +5,9 @@ import ast._
 import parsing._
 import analyzer._
 import codegen._
-
 import java.io.File
+
+import amyc.amydocgen.DocGen
 
 object Main extends MainHelpers {
   private def parseArgs(args: Array[String]): Context = {
@@ -20,6 +21,7 @@ object Main extends MainHelpers {
       Parser andThen
       NameAnalyzer andThen
       TypeChecker andThen
+      DocGen andThen
       CodeGen andThen
       CodePrinter
 
