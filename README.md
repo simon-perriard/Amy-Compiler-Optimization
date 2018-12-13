@@ -3,7 +3,7 @@
 This compiler has been developed during the Computer Language Processing course 2018 at EPFL.
 
 Current optimizations :
-  - AmyDoc
+  - AmyDoc (in development)
   
 ### AmyDoc
 The delimitters for AmyDoc are '~', it supports @param and @return.
