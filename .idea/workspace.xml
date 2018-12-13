@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="width" value="950" />
+    <option name="height" value="1032" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project01" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project02" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project03" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project04" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project05" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project06" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project07" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project08" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../Semestre_4/Parallelism and concurrency/Assignments/project09" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab01/clp-lab01" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab01_Amy_Interpreter/clp-lab01" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab02/clp-lab02" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab03/clp-lab03" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab04/clp-lab04" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab05/clp-lab05" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/CLP_lab06_Amy_Code_Generation/clp-lab06" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../Labs/clp-lab01" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab01_Amy_Interpreter" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab02_Amy_Lexer" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab03_Amy_Parser" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab04_Amy_Name_Analyzer" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab05_Amy_Type_Checker" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../amy-compiler/CLP_lab06_Amy_Code_Generation" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../../Scala_test_env/foo-build" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
