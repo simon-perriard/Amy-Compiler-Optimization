@@ -1,4 +1,10 @@
-Example3
-bite
+#Module Example3
 
-bite
+
+### fastExp(base : Intexp : Intcurrent : Int)
+
+this function does fast exp
+
+### exp(number : Intpower : Int)
+
+this one does succ

@@ -39,7 +39,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
           val sb = new StringBuilder()
           mod.defs.foreach {
             {
-              case f@N.FunDef(_, _, _, _, doc) => if (doc.isDefined) sb.append(System.lineSeparator()).append(funDocGen(f)).append(System.lineSeparator())
+              case f@N.FunDef(_, _, _, _, _) => sb.append(System.lineSeparator()).append(funDocGen(f)).append(System.lineSeparator())
               case _ =>
             }
           }

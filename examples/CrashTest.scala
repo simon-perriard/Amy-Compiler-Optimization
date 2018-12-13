@@ -1,3 +1,3 @@
-object Ll {
+object CrashTest {
 
 }
