@@ -94,11 +94,28 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
 
         val (link, follow) = spec.drop(5).span(c => !c.isWhitespace)
 
-        if (!moduleNames.contains(link)) {
-          ctx.reporter.error("AmyDoc link doesn't match any existing module in function " + currFun + " in module " + currModule)
+        if(link.contains('.')){                       //case @see Module.function
+
+          val (mod, fun) = link.span(c => c != '.')
+          lazy val funNamesInModule = nProgram.modules.filter(m => m.name.equals(mod)).head.defs.map(d => d.name)
+
+          if(!moduleNames.contains(mod) || !funNamesInModule.contains(fun) ){   //check if module and function exist
+            ctx.reporter.error("AmyDoc link doesn't match any existing module in function "+currFun+" in module "+currModule)
+          }
+
+          //try to link to the module AND the function
+          generalDoc+doubleJump+"see ["+link+".scala]("+link+".html#"+fun+")"+parseDoc(follow,paramNames,currModule, currFun)
+
         }
 
-        generalDoc + doubleJump + "see [" + link + ".scala](" + link + ".html5)" + parseDoc(follow, paramNames, currModule, currFun)
+        else{    //case @see Module
+
+          if(!moduleNames.contains(link)){
+            ctx.reporter.error("AmyDoc link doesn't match any existing module in function "+currFun+" in module "+currModule)
+          }
+
+          generalDoc+doubleJump+"see ["+link+".scala]("+link+".html)"+parseDoc(follow,paramNames,currModule, currFun)
+        }
       }
 
       else { //not a valid instruction => not one of those (param,return,see)
