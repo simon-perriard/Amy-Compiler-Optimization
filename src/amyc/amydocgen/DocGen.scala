@@ -1,39 +1,69 @@
 package amyc
 package amydocgen
 
-import java.io.{File, PrintWriter}
-
-import amyc.analyzer.{FunSig, SymbolTable}
+import amyc.analyzer.SymbolTable
+import ast.{NominalTreeModule => N, SymbolicTreeModule => S}
 import utils._
-import ast.{Identifier, TreeModule, NominalTreeModule => N, SymbolicTreeModule => S}
+import java.io._
 
 
-object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, SymbolTable)]{
+
+object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, SymbolTable)] {
+
+
 
   def run(ctx: Context)(v: (S.Program, SymbolTable, N.Program)): (S.Program, SymbolTable) = {
+    import ctx.reporter._
+
     val (sProgram, table, nProgram) = v
+    val moduleNames = nProgram.modules.map(_.name)
 
-   nProgram.modules.foreach{  //generate doc for each module in the program
-      m =>
-        val writer = new PrintWriter(new File(m.name))   //create writer for the module's file
+    val doubleJump = System.lineSeparator() + System.lineSeparator()
 
-        val funDefs = m.defs.map{case funDef: N.FunDef =>funDef}  //only keep function definition
+    var folderExists = false
+    val mdFolderName = "markdown"
 
-       // val functions = m.defs.map(d => table.getFunction(m.name,d.name).get) //get all functions from the current module
-
-        val docHeader = "#Module "+m.name+"\n\n"      //header for the file
-
-
-       // val markdownText = functions.map(f => funDocGen(f._1.name,f._2)).fold(docHeader)(_+_) //generate markdown for each function
-
-        val markdownText = funDefs.map(d => funDocGen(d,m.name)).fold("")(_+_)
-
-        writer.write(markdownText)
-
-        writer.close()
+    //Create the dir containing the doc if needed
+    val mdFolder = new File(mdFolderName)
+    if (!mdFolder.exists()) {
+      try {
+        mdFolder.mkdir()
+        folderExists = true
+      } catch {
+        case e: SecurityException => println("Unable to create a folder for the doc, please create a folder named 'markdown'")
+          e.printStackTrace()
+      }
+    } else {
+      folderExists = true
     }
 
-    def parseDoc(doc: String, modules: List[String], paramNames: List[String])(implicit currModule: String, currFun: String): String = {
+    if (folderExists) {
+      nProgram.modules.foreach {
+        //Generate one file per module
+        mod =>
+
+          val sb = new StringBuilder()
+          mod.defs.foreach {
+            {
+              case f@N.FunDef(_, _, _, _, _) => sb.append(funDocGen(f, mod.name)).append(doubleJump)
+              case _ =>
+            }
+          }
+          if (sb.nonEmpty) {
+            val file = new File(mdFolderName + File.separator + mod.name + ".md")
+            val bw = new BufferedWriter(new FileWriter(file))
+            bw.write(mdGenModuleHeader(mod.name))
+            bw.write(sb.toString())
+            bw.close()
+          }
+      }
+    }
+
+    def mdGenModuleHeader(name: String): String = {
+      "#Module " + name + doubleJump
+    }
+
+    def parseDoc(doc: String, paramNames: List[String], currModule: String, currFun: String): String = {
 
       val (generalDoc, spec) = doc.span(p => p!= '@')
 
@@ -44,37 +74,37 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
 
       if(spec.startsWith("@param")){      //parameter description
 
-        val (parameter, follow) =  spec.drop(6).span(c => !c.isWhitespace)          //following string until whitespace is the name of the parameter (need to check coherence with function definition)
+        val (parameter, follow) =  spec.drop(7).span(c => !c.isWhitespace)          //following string until whitespace is the name of the parameter (need to check coherence with function definition)
 
         if(!paramNames.contains(parameter)){  //check if there is a matching parameter
           ctx.reporter.error("AmyDoc doesn't match function parameter in function "+currFun+" in module "+currModule)
         }
-        generalDoc+"\n\n"+"#####Parameter : **"+parameter+"** \n"+parseDoc(follow, modules, paramNames.filter(s => !s.equals(parameter)))   //recursion while consuming parameter
+        generalDoc+doubleJump+"#####Parameter : **"+parameter+"** \n"+parseDoc(follow, paramNames.filter(s => !s.equals(parameter)),currModule, currFun)   //recursion while consuming parameter
 
       }
 
 
       else if(spec.startsWith("@return")){  //description of what is returned
-        val follow = spec.drop(7)
+        val follow = spec.drop(8)
 
-        generalDoc+"\n\n"+"#####Return : "+parseDoc(follow,modules,paramNames)
+        generalDoc+doubleJump+"#####Return : "+parseDoc(follow,paramNames,currModule, currFun)
 
       }
 
 
       else if(spec.startsWith("@see")){  //ling to a class name (need to check)
 
-        val (link, follow) = spec.drop(4).span(c => !c.isWhitespace)
+        val (link, follow) = spec.drop(5).span(c => !c.isWhitespace)
 
-        if(!modules.contains(link)){
+        if(!moduleNames.contains(link)){
           ctx.reporter.error("AmyDoc link doesn't match any existing module in function "+currFun+" in module "+currModule)
         }
 
-        generalDoc+"\n\n"+"see ["+link+".scala]("+link+".html)"+parseDoc(follow,modules,paramNames)
+        generalDoc+doubleJump+"see ["+link+".scala]("+link+".html)"+parseDoc(follow,paramNames,currModule, currFun)
 
       }
 
-        
+
       else {    //not a valid instruction => not one of those (param,return,see)
         generalDoc
       }
@@ -96,16 +126,15 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
       else{ //doc found. Parse it and insert it
 
-        val documentation = parseDoc(doc.get,,)(moduleName,funDef.name)
+        val documentation = parseDoc(doc.get, funDef.paramNames, moduleName, funDef.name)
 
-        functionSig+"\n\n"+documentation
+        functionSig+doubleJump+documentation
 
       }
     }
 
     (sProgram, table)
   }
-
 
 
 

@@ -31,7 +31,7 @@ class ASTConstructorLL1 extends ASTConstructor {
           constructExpr(body),
           Option(text)
         ).setPos(df)
-      case Node('FunDef ::= _, List(Node('OptDoc ::= _, List(_)), Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
+      case Node('FunDef ::= _, List(Node('OptDoc ::= _, _), Leaf(df), name, _, params, _, _, retType, _, _, body, _)) =>
         FunDef(
           constructName(name)._1,
           constructList(params, constructParam, hasComma = true),
@@ -134,7 +134,7 @@ class ASTConstructorLL1 extends ASTConstructor {
     }
   }
 
-  //overrided because I deletedd the '()' in 'Literal
+  //overridden because I deleted the '()' in 'Literal
   override def constructLiteral(pTree: NodeOrLeaf[Token]): Literal[_] = {
     pTree match {
       case Node('Literal ::= List(INTLITSENT), List(Leaf(it@INTLIT(i)))) =>
@@ -148,8 +148,8 @@ class ASTConstructorLL1 extends ASTConstructor {
     }
   }
 
-  //overrided because I deleted the '()' in literal and had to replace where literal was previously used
-  //and because I modifed the grammar for 'Pattern
+  //overridden because I deleted the '()' in literal and had to replace where literal was previously used
+  //and because I modified the grammar for 'Pattern
   override def constructPattern(pTree: NodeOrLeaf[Token]): Pattern = {
     pTree match {
       case Node('Pattern ::= List(UNDERSCORE()), List(Leaf(ut))) =>
@@ -168,7 +168,7 @@ class ASTConstructorLL1 extends ASTConstructor {
         LiteralPattern(UnitLiteral().setPos(lp)).setPos(lp)
     }
   }
-  //overrided because I modified the grammar for QName
+  //overridden because I modified the grammar for QName
   override def constructQname(pTree: NodeOrLeaf[Token]): (QualifiedName, Positioned) = {
     pTree match {
       case Node('QName ::= _, List(id, Node('QNameOpt ::= _, List()))) =>
@@ -181,7 +181,7 @@ class ASTConstructorLL1 extends ASTConstructor {
     }
   }
 
-  //overrided because the op that are given are Leaf() and not Node(Leaf()) anymore
+  //overridden because the op that are given are Leaf() and not Node(Leaf()) anymore
   override def constructOp(ptree: NodeOrLeaf[Token]): (Expr, Expr) => Expr = {
     ptree match {
       case Leaf(t) =>

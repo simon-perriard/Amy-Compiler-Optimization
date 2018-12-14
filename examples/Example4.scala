@@ -1,4 +1,4 @@
-object example2 {
+object Example4 {
 
   //"Imports"
 

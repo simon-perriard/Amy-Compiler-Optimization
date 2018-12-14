@@ -122,9 +122,7 @@ object Parser extends Pipeline[Stream[Token], Program] {
 
 
   def run(ctx: Context)(tokens: Stream[Token]): Program = {
-    // TODO: Switch to LL1 when you are ready
     val (grammar, constructor) = (amyGrammarLL1, new ASTConstructorLL1)
-    //val (grammar, constructor) = (amyGrammar, new ASTConstructor)
 
     import ctx.reporter._
     implicit val gc = new GlobalContext()
