@@ -1,7 +1,12 @@
 object Example3 {
 
 
-  ~this function does fast exp~
+  ~
+    this function does fast exp
+    @param base hello
+    @param exp hedi
+    @param current &benito
+  ~
   def fastExp(base: Int, exp: Int, current: Int): Int = {
 
 
@@ -25,7 +30,9 @@ object Example3 {
 
   }
 
-  ~this one does succ~
+  ~
+    this one does succ @see Std
+  ~
   def exp(number: Int, power: Int): Int = {fastExp(number,power,1)}
 
 
