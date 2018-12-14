@@ -1,28 +1,32 @@
 object Example3 {
 
 
+  ~this function does fast exp
+  @param base hello
+  @param exp hedi
+  @param current & benito
   ~
-    this function does fast exp
-    @param base hello
-    @param exp hedi
-    @param current &benito
-  ~
+
   def fastExp(base: Int, exp: Int, current: Int): Int = {
 
 
-    if(exp == 0) { 1}
+    if (exp == 0) {
+      1
+    }
 
-    else{
-      if(exp == 1) { base * current}
-      else{
-        if(exp % 2 == 0){
+    else {
+      if (exp == 1) {
+        base * current
+      }
+      else {
+        if (exp % 2 == 0) {
 
-          fastExp(base * base, exp/2, current)
+          fastExp(base * base, exp / 2, current)
 
         }
-        else{
+        else {
 
-          fastExp(base, exp-1, current * base)
+          fastExp(base, exp - 1, current * base)
         }
 
       }
@@ -30,10 +34,13 @@ object Example3 {
 
   }
 
+  ~this one does succ
+  @see Std
   ~
-    this one does succ @see Std
-  ~
-  def exp(number: Int, power: Int): Int = {fastExp(number,power,1)}
+
+  def exp(number: Int, power: Int): Int = {
+    fastExp(number, power, 1)
+  }
 
 
   Std.printString("Enter a number :");
@@ -44,7 +51,7 @@ object Example3 {
 
   val power: Int = Std.readInt();
 
-  val answer: String = "The result of "++Std.intToString(number) ++ " to the power "++Std.intToString(power)++" equals : "++Std.intToString(exp(number,power));
+  val answer: String = "The result of " ++ Std.intToString(number) ++ " to the power " ++ Std.intToString(power) ++ " equals : " ++ Std.intToString(exp(number, power));
 
   Std.printString(answer)
 
