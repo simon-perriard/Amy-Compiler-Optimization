@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="module-crashtest">Module CrashTest</h1>
+<h3 id="benitomarie-int-love-boolean-boolean">benito(marie: Int, love: Boolean): Boolean</h3>
+<p>This function involves love see <a href="Std.html5#.printInt">Std.printInt.scala</a></p>
+<h5 id="parameter-marie-es-la-copiña">Parameter : <strong>marie</strong> es la <em>copiña</em></h5>
+<h5 id="parameter-love-ouiiiiiiiiiiiiiiiii">Parameter : <strong>love</strong> ouiiiiiiiiiiiiiiiii</h5>
+<h5 id="return-dat-love">Return : dat love</h5>
+</body>
+</html>
