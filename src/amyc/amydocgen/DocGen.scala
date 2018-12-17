@@ -44,7 +44,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
           val sb = new StringBuilder()
           mod.defs.foreach {
             {
-              case f@N.FunDef(_, _, _, _, _) => sb.append(funDocGen(f, mod.name)).append(doubleJump)
+              case f@N.FunDef(_, _, _, _, _) => sb.append(funDocGen(f, mod.name)).append("<br><br>").append(doubleJump)
               case _ =>
             }
           }
@@ -59,7 +59,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
     }
 
     def mdGenModuleHeader(name: String): String = {
-      "#Module " + name + doubleJump
+      "%Module " + name + doubleJump
     }
 
     def parseDoc(doc: String, paramNames: List[String], currModule: String, currFun: String): String = {
@@ -78,7 +78,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
         if (!paramNames.contains(parameter)) { //check if there is a matching parameter
           error("AmyDoc doesn't match function parameter in function " + currFun + " in module " + currModule)
         }
-        generalDoc + jmp + "#####Parameter : **" + parameter + "**" + parseDoc(follow, paramNames.filter(s => !s.equals(parameter)), currModule, currFun) //recursion while consuming parameter
+        generalDoc + "<br>" + "**Parameter : " + parameter + "**" + parseDoc(follow, paramNames.filter(s => !s.equals(parameter)), currModule, currFun) //recursion while consuming parameter
 
       }
 
@@ -86,7 +86,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       else if (spec.startsWith("@return")) { //description of what is returned
         val follow = spec.drop(8)
 
-        generalDoc + jmp + "#####Return : " + parseDoc(follow, paramNames, currModule, currFun)
+        generalDoc + "<br>" + "**Return : **" + parseDoc(follow, paramNames, currModule, currFun)
 
       }
 
@@ -140,7 +140,6 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
         val documentation = parseDoc(doc.get, funDef.paramNames, moduleName, funDef.name)
 
         functionSig + doubleJump + documentation
-
       }
     }
 
