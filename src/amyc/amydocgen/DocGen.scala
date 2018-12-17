@@ -16,7 +16,8 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
     val (sProgram, table, nProgram) = v
     val moduleNames = nProgram.modules.map(_.name)
 
-    val doubleJump = System.lineSeparator() + System.lineSeparator()
+    val jmp = System.lineSeparator()
+    val doubleJump = jmp + jmp
 
     var folderExists = false
     val mdFolderName = "markdown"
@@ -75,9 +76,9 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
         val (parameter, follow) = spec.drop(7).span(c => !c.isWhitespace) //following string until whitespace is the name of the parameter (need to check coherence with function definition)
 
         if (!paramNames.contains(parameter)) { //check if there is a matching parameter
-          ctx.reporter.error("AmyDoc doesn't match function parameter in function " + currFun + " in module " + currModule)
+          error("AmyDoc doesn't match function parameter in function " + currFun + " in module " + currModule)
         }
-        generalDoc + doubleJump + "#####Parameter : **" + parameter + "** \n" + parseDoc(follow, paramNames.filter(s => !s.equals(parameter)), currModule, currFun) //recursion while consuming parameter
+        generalDoc + jmp + "#####Parameter : **" + parameter + "**" + parseDoc(follow, paramNames.filter(s => !s.equals(parameter)), currModule, currFun) //recursion while consuming parameter
 
       }
 
@@ -85,7 +86,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       else if (spec.startsWith("@return")) { //description of what is returned
         val follow = spec.drop(8)
 
-        generalDoc + doubleJump + "#####Return : " + parseDoc(follow, paramNames, currModule, currFun)
+        generalDoc + jmp + "#####Return : " + parseDoc(follow, paramNames, currModule, currFun)
 
       }
 
@@ -94,27 +95,27 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
 
         val (link, follow) = spec.drop(5).span(c => !c.isWhitespace)
 
-        if(link.contains('.')){                       //case @see Module.function
+        if (link.contains('.')) { //case @see Module.function
 
           val (mod, fun) = link.span(c => c != '.')
           lazy val funNamesInModule = nProgram.modules.filter(m => m.name.equals(mod)).head.defs.map(d => d.name)
 
-          if(!moduleNames.contains(mod) || !funNamesInModule.contains(fun) ){   //check if module and function exist
-            ctx.reporter.error("AmyDoc link doesn't match any existing module in function "+currFun+" in module "+currModule)
+          if (!moduleNames.contains(mod) || !funNamesInModule.contains(fun.tail)) { //check if module and function exist
+            ctx.reporter.error("AmyDoc link doesn't match any existing module in function " + currFun + " in module " + currModule)
           }
 
           //try to link to the module AND the function
-          generalDoc+doubleJump+"see ["+link+".scala]("+link+".html#"+fun+")"+parseDoc(follow,paramNames,currModule, currFun)
+          generalDoc + "see [" + link + ".scala](" + mod + ".html5#" + fun + ")" + parseDoc(follow, paramNames, currModule, currFun)
 
         }
 
-        else{    //case @see Module
+        else { //case @see Module
 
-          if(!moduleNames.contains(link)){
-            ctx.reporter.error("AmyDoc link doesn't match any existing module in function "+currFun+" in module "+currModule)
+          if (!moduleNames.contains(link)) {
+            ctx.reporter.error("AmyDoc link doesn't match any existing module in function " + currFun + " in module " + currModule)
           }
 
-          generalDoc+doubleJump+"see ["+link+".scala]("+link+".html)"+parseDoc(follow,paramNames,currModule, currFun)
+          generalDoc + "see [" + link + ".scala](" + link + ".html5)" + parseDoc(follow, paramNames, currModule, currFun)
         }
       }
 
@@ -126,8 +127,8 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
     def funDocGen(funDef: N.FunDef, moduleName: String): String = {
 
       //does funDef.params.map(p => (name,p.tt)) work ???? instead of using paramNames....
-      val args = funDef.paramNames.zip(funDef.params.map(p => p.tt)).map(e => e._1 + " : " + e._2).fold("")(_ + _) //string for args with name and type
-      val functionSig = "### " + funDef.name + "(" + args + ")"
+      val args = funDef.paramNames.zip(funDef.params.map(p => p.tt)).map(e => e._1 + ": " + e._2 + ", ").fold("")(_ + _) //string for args with name and type
+      val functionSig = "### " + funDef.name + "(" + (if (args.isEmpty) "" else args.substring(0, args.length - 2)) + "): " + funDef.retType
       val doc = funDef.doc
 
       if (doc.isEmpty) { //no doc found
