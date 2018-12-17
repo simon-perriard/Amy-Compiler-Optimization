@@ -4,18 +4,20 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title></title>
+  <title>Module Std</title>
   <style type="text/css">code{white-space: pre;}</style>
 </head>
 <body>
-<h1 id="module-std">Module Std</h1>
-<h3 id="printinti-int-unit">printInt(i: Int): Unit</h3>
-<h3 id="printstrings-string-unit">printString(s: String): Unit</h3>
-<h3 id="printbooleanb-boolean-unit">printBoolean(b: Boolean): Unit</h3>
-<h3 id="readstring-string">readString(): String</h3>
-<h3 id="readint-int">readInt(): Int</h3>
-<h3 id="inttostringi-int-string">intToString(i: Int): String</h3>
-<h3 id="digittostringi-int-string">digitToString(i: Int): String</h3>
-<h3 id="booleantostringb-boolean-string">booleanToString(b: Boolean): String</h3>
+<div id="header">
+<h1 class="title">Module Std</h1>
+</div>
+<h3 id="printinti-int-unit">printInt(i: Int): Unit<br><br></h3>
+<h3 id="printstrings-string-unit">printString(s: String): Unit<br><br></h3>
+<h3 id="printbooleanb-boolean-unit">printBoolean(b: Boolean): Unit<br><br></h3>
+<h3 id="readstring-string">readString(): String<br><br></h3>
+<h3 id="readint-int">readInt(): Int<br><br></h3>
+<h3 id="inttostringi-int-string">intToString(i: Int): String<br><br></h3>
+<h3 id="digittostringi-int-string">digitToString(i: Int): String<br><br></h3>
+<h3 id="booleantostringb-boolean-string">booleanToString(b: Boolean): String<br><br></h3>
 </body>
 </html>
