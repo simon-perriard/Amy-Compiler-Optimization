@@ -9,6 +9,7 @@ project/target
 node_modules
 package-lock.json
 markdown/
+amydoc/
 # IntelliJ IDEA config files
 .idea
 # Archive files
