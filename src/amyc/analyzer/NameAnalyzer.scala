@@ -9,8 +9,8 @@ import ast.{Identifier, NominalTreeModule => N, SymbolicTreeModule => S}
 // and returns a symbolic program, where all names have been resolved to unique Identifiers.
 // Rejects programs that violate the Amy naming rules.
 // Also populates and returns the symbol table.
-object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable, N.Program)] {
-  def run(ctx: Context)(p: N.Program): (S.Program, SymbolTable, N.Program) = {
+object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable)] {
+  def run(ctx: Context)(p: N.Program): (S.Program, SymbolTable) = {
     import ctx.reporter._
 
     // Step 0: Initialize symbol table
@@ -305,7 +305,7 @@ object NameAnalyzer extends Pipeline[N.Program, (S.Program, SymbolTable, N.Progr
       }
     ).setPos(p)
 
-    (newProgram, table, p)
+    (newProgram, table)
 
   }
 }

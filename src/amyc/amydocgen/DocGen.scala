@@ -2,19 +2,20 @@ package amyc
 package amydocgen
 
 import amyc.analyzer.SymbolTable
-import ast.{NominalTreeModule => N, SymbolicTreeModule => S}
+import ast.{SymbolicTreeModule => S}
 import utils._
 import java.io._
 
 
-object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, SymbolTable)] {
+object DocGen extends Pipeline[(S.Program, SymbolTable), (S.Program, SymbolTable)] {
 
 
-  def run(ctx: Context)(v: (S.Program, SymbolTable, N.Program)): (S.Program, SymbolTable) = {
+  def run(ctx: Context)(v: (S.Program, SymbolTable)): (S.Program, SymbolTable) = {
     import ctx.reporter._
 
-    val (sProgram, table, nProgram) = v
-    val moduleNames = nProgram.modules.map(_.name)
+    val (sProgram, table) = v
+
+    val moduleNames = sProgram.modules.map(_.name.toString)
 
     val jmp = System.lineSeparator()
     val doubleJump = jmp + jmp
@@ -37,14 +38,14 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
     }
 
     if (folderExists) {
-      nProgram.modules.foreach {
+      sProgram.modules.foreach {
         //Generate one file per module
         mod =>
 
           val sb = new StringBuilder()
           mod.defs.foreach {
             {
-              case f@N.FunDef(_, _, _, _, _) => sb.append(funDocGen(f, mod.name)).append("<br><br>").append(doubleJump)
+              case f@S.FunDef(_, _, _, _, _) => sb.append(funDocGen(f, mod.name)).append("<br><br>").append(doubleJump)
               case _ =>
             }
           }
@@ -58,11 +59,11 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
     }
 
-    def mdGenModuleHeader(name: String): String = {
+    def mdGenModuleHeader(name: S.Name): String = {
       "%Module " + name + doubleJump
     }
 
-    def parseDoc(doc: String, paramNames: List[String], currModule: String, currFun: String): String = {
+    def parseDoc(doc: String, paramNames: List[String], currModule: String, currFun: S.Name): String = {
 
       val (generalDoc, spec) = doc.span(p => p != '@')
 
@@ -98,14 +99,14 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
         if (link.contains('.')) { //case @see Module.function
 
           val (mod, fun) = link.span(c => c != '.')
-          lazy val funNamesInModule = nProgram.modules.filter(m => m.name.equals(mod)).head.defs.map(d => d.name)
+          lazy val funNamesInModule = sProgram.modules.filter(m => m.name.toString.equals(mod)).head.defs.map(d => d.name.toString)
 
           if (!moduleNames.contains(mod) || !funNamesInModule.contains(fun.tail)) { //check if module and function exist
             ctx.reporter.error("AmyDoc link doesn't match any existing module in function " + currFun + " in module " + currModule)
           }
 
           //try to link to the module AND the function
-          generalDoc + "see [" + link + ".scala](" + mod + ".html5#" + fun + ")" + parseDoc(follow, paramNames, currModule, currFun)
+          generalDoc + "see [" + link + ".scala](" + mod + ".html5#" + fun.tail + ")" + parseDoc(follow, paramNames, currModule, currFun)
 
         }
 
@@ -124,11 +125,10 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
       }
     }
 
-    def funDocGen(funDef: N.FunDef, moduleName: String): String = {
+    def funDocGen(funDef: S.FunDef, moduleName: S.Name): String = {
 
-      //does funDef.params.map(p => (name,p.tt)) work ???? instead of using paramNames....
-      val args = funDef.paramNames.zip(funDef.params.map(p => p.tt)).map(e => e._1 + ": " + e._2 + ", ").fold("")(_ + _) //string for args with name and type
-      val functionSig = "### " + funDef.name + "(" + (if (args.isEmpty) "" else args.substring(0, args.length - 2)) + "): " + funDef.retType
+      val args = funDef.params.toString().substring(4)
+      val functionSig = "<h4 id=\""+funDef.name+"\">" + funDef.name + args + ": " + funDef.retType + "</h4>"
       val doc = funDef.doc
 
       if (doc.isEmpty) { //no doc found
@@ -137,9 +137,9 @@ object DocGen extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, 
 
       } else { //doc found. Parse it and insert it
 
-        val documentation = parseDoc(doc.get, funDef.paramNames, moduleName, funDef.name)
+        val documentation = parseDoc(doc.get, funDef.paramNames.map(_.toString), moduleName.toString, funDef.name)
 
-        functionSig + doubleJump + documentation
+        doubleJump + functionSig + documentation
       }
     }
 

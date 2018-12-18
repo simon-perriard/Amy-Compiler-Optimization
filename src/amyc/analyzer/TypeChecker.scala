@@ -3,16 +3,16 @@ package analyzer
 
 import utils._
 import ast.SymbolicTreeModule._
-import ast.{Identifier, NominalTreeModule => N, SymbolicTreeModule => S}
+import ast.{Identifier, SymbolicTreeModule => S}
 
 // The type checker for Amy
 // Takes a symbolic program and rejects it if it does not follow the Amy typing rules.
-object TypeChecker extends Pipeline[(S.Program, SymbolTable, N.Program), (S.Program, SymbolTable, N.Program)] {
+object TypeChecker extends Pipeline[(S.Program, SymbolTable), (S.Program, SymbolTable)] {
 
-  def run(ctx: Context)(v: (S.Program, SymbolTable, N.Program)): (S.Program, SymbolTable, N.Program) = {
+  def run(ctx: Context)(v: (S.Program, SymbolTable)): (S.Program, SymbolTable) = {
     import ctx.reporter._
 
-    val (program, table, _) = v
+    val (program, table) = v
 
     case class Constraint(found: Type, expected: Type, pos: Position)
 
