@@ -1,6 +1,6 @@
 object CrashTest {
 
-  ~This function involves love @see Std.printInt
+  ~This function involves love @see L.take
   @param marie es la _copiña_
   @param love ouiiiiiiiiiiiiiiiii
   @return dat love

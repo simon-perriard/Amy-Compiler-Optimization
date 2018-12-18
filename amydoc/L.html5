@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Module L</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Module L</h1>
+</div>
+<h4 id="isEmpty">
+isEmpty(l: List): Boolean
+</h4>
+<p><br><br></p>
+<h4 id="length">
+length(l: List): Int
+</h4>
+<p><br><br></p>
+<h4 id="head">
+head(l: List): Int
+</h4>
+<p><br><br></p>
+<h4 id="headOption">
+headOption(l: List): Option
+</h4>
+<p><br><br></p>
+<h4 id="reverse">
+reverse(l: List): List
+</h4>
+<p><br><br></p>
+<h4 id="reverseAcc">
+reverseAcc(l: List, acc: List): List
+</h4>
+<p><br><br></p>
+<h4 id="indexOf">
+indexOf(l: List, i: Int): Int
+</h4>
+<p><br><br></p>
+<h4 id="range">
+range(from: Int, to: Int): List
+</h4>
+<p><br><br></p>
+<h4 id="sum">
+sum(l: List): Int
+</h4>
+<p><br><br></p>
+<h4 id="concat">
+concat(l1: List, l2: List): List
+</h4>
+<p><br><br></p>
+<h4 id="contains">
+contains(l: List, elem: Int): Boolean
+</h4>
+<p><br><br></p>
+<h4 id="merge">
+merge(l1: List, l2: List): List
+</h4>
+<p><br><br></p>
+<h4 id="split">
+split(l: List): LPair
+</h4>
+<p><br><br></p>
+<h4 id="mergeSort">
+mergeSort(l: List): List
+</h4>
+<p><br><br></p>
+<h4 id="toString">
+toString(l: List): String
+</h4>
+<p><br><br></p>
+<h4 id="toString1">
+toString1(l: List): String
+</h4>
+<p><br><br></p>
+<h4 id="take">
+take(l: List, n: Int): List
+</h4>
+<p><br><br></p>
+</body>
+</html>

@@ -4,43 +4,31 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <title>Module Std</title>
+  <title>Module O</title>
   <style type="text/css">code{white-space: pre;}</style>
 </head>
 <body>
 <div id="header">
-<h1 class="title">Module Std</h1>
+<h1 class="title">Module O</h1>
 </div>
-<h4 id="printInt">
-printInt(i: Int): Unit
+<h4 id="isDefined">
+isDefined(o: Option): Boolean
 </h4>
 <p><br><br></p>
-<h4 id="printString">
-printString(s: String): Unit
+<h4 id="get">
+get(o: Option): Int
 </h4>
 <p><br><br></p>
-<h4 id="printBoolean">
-printBoolean(b: Boolean): Unit
+<h4 id="getOrElse">
+getOrElse(o: Option, i: Int): Int
 </h4>
 <p><br><br></p>
-<h4 id="readString">
-readString(): String
+<h4 id="orElse">
+orElse(o1: Option, o2: Option): Option
 </h4>
 <p><br><br></p>
-<h4 id="readInt">
-readInt(): Int
-</h4>
-<p><br><br></p>
-<h4 id="intToString">
-intToString(i: Int): String
-</h4>
-<p><br><br></p>
-<h4 id="digitToString">
-digitToString(i: Int): String
-</h4>
-<p><br><br></p>
-<h4 id="booleanToString">
-booleanToString(b: Boolean): String
+<h4 id="toList">
+toList(o: Option): List
 </h4>
 <p><br><br></p>
 </body>
