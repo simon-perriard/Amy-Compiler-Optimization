@@ -94,7 +94,9 @@ object DocGen extends Pipeline[(S.Program, SymbolTable), (S.Program, SymbolTable
 
       else if (spec.startsWith("@see")) { //link to a class name (need to check)
 
-        val (link, follow) = spec.drop(5).span(c => !c.isWhitespace)
+        //There could be (@see x), parenthesis will be a problem
+        val (link, follow) = spec.drop(5).span(c => !c.isWhitespace && !(c==')'))
+
 
         if (link.contains('.')) { //case @see Module.function
 
