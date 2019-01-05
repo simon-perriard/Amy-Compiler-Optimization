@@ -1,6 +1,6 @@
 object CrashTest {
 
-  ~This _function_ returns true and is used with @see List.take
+  ~This _function_ returns true and is used with @see L.take
   @param n a number
   @param bool a **boolean**
   @return true

@@ -39,7 +39,7 @@ object L {
 
   ~This function returns the head of the list if any
   @param l a list
-  @return an option containing the head of the list if any
+  @return an option @see O containing the head of the list if any
   ~
   def headOption(l: List): O.Option = {
     l match {
