@@ -1,9 +1,9 @@
 #!/bin/bash
-#Short scriptto convert .md files in the markdown folder to HTML for AmyDoc
+#Short script to convert .md files in the markdown folder to HTML for AmyDoc
 OUTPUTFOLDER="amydoc"
 INPUTFOLDER="markdown"
 FORMAT="markdown"
-OUT="html5"
+OUT="html"
 FLAGS=-s
 
 #Check for pandoc
@@ -24,7 +24,7 @@ do
   SUBSTRING=$(echo "$module"| cut -d '.' -f 1)
   SUBSTRING=$(echo "$SUBSTRING" | cut -d '/' -f 2)
   echo "Processing $SUBSTRING" 
-  pandoc $FLAGS "$module" > $OUTPUTFOLDER/$SUBSTRING.$OUT
+  pandoc $FLAGS -f $FORMAT -t $OUT "$module" > $OUTPUTFOLDER/$SUBSTRING.$OUT
 done
 
 exit 0
