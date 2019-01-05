@@ -1,18 +1,35 @@
 object L {
+
   abstract class List
   case class Nil() extends List
   case class Cons(h: Int, t: List) extends List
- 
-  def isEmpty(l : List): Boolean = { l match {
-    case Nil() => true
-    case _ => false 
-  }}
 
-  def length(l: List): Int = { l match {
-    case Nil() => 0
-    case Cons(_, t) => 1 + length(t)
-  }}
+  ~This function checks wether a list is empty
+  @param l a list
+  @return true if the list is empty, false otherwise
+  ~
+  def isEmpty(l: List): Boolean = {
+    l match {
+      case Nil() => true
+      case _ => false
+    }
+  }
 
+  ~This function returns the size a given list
+    @param l a list
+  @return the length of the list
+    ~
+  def length(l: List): Int = {
+    l match {
+      case Nil() => 0
+      case Cons(_, t) => 1 + length(t)
+    }
+  }
+
+  ~This function returns the head of the list given in parameters or an error
+  @param l a list
+  @return the head of the list or an error if the list is empty
+  ~
   def head(l: List): Int = {
     l match {
       case Cons(h, _) => h
@@ -20,6 +37,10 @@ object L {
     }
   }
 
+  ~This function returns the head of the list if any
+  @param l a list
+  @return an option containing the head of the list if any
+  ~
   def headOption(l: List): O.Option = {
     l match {
       case Cons(h, _) => O.Some(h)
@@ -42,26 +63,36 @@ object L {
     l match {
       case Nil() => -1
       case Cons(h, t) =>
-        if (h == i) { 0 }
+        if (h == i) {
+          0
+        }
         else {
           val rec: Int = indexOf(t, i);
-          if (0 <= rec) { rec + 1 }
-          else { -1 }
+          if (0 <= rec) {
+            rec + 1
+          }
+          else {
+            -1
+          }
         }
     }
   }
 
   def range(from: Int, to: Int): List = {
-    if (to < from) { Nil() }
+    if (to < from) {
+      Nil()
+    }
     else {
       Cons(from, range(from + 1, to))
     }
   }
 
-  def sum(l: List): Int = { l match {
-    case Nil() => 0
-    case Cons(h, t) => h + sum(t)
-  }}
+  def sum(l: List): Int = {
+    l match {
+      case Nil() => 0
+      case Cons(h, t) => h + sum(t)
+    }
+  }
 
   def concat(l1: List, l2: List): List = {
     l1 match {
@@ -70,14 +101,17 @@ object L {
     }
   }
 
-  def contains(l: List, elem: Int): Boolean = { l match {
-    case Nil() =>
-      false
-    case Cons(h, t) =>
-      h == elem || contains(t, elem)
-  }}
+  def contains(l: List, elem: Int): Boolean = {
+    l match {
+      case Nil() =>
+        false
+      case Cons(h, t) =>
+        h == elem || contains(t, elem)
+    }
+  }
 
   abstract class LPair
+
   case class LP(l1: List, l2: List) extends LPair
 
   def merge(l1: List, l2: List): List = {
@@ -108,6 +142,7 @@ object L {
         LP(l, Nil())
     }
   }
+
   def mergeSort(l: List): List = {
     l match {
       case Nil() => l
@@ -119,26 +154,37 @@ object L {
         }
     }
   }
-  
-  def toString(l: List): String = { l match {
-    case Nil() => "List()"
-    case more => "List(" ++ toString1(more) ++ ")"
-  }}
 
-  def toString1(l : List): String = { l match {
-    case Cons(h, Nil()) => Std.intToString(h)
-    case Cons(h, t) => Std.intToString(h) ++ ", " ++ toString1(t)
-  }}
+  def toString(l: List): String = {
+    l match {
+      case Nil() => "List()"
+      case more => "List(" ++ toString1(more) ++ ")"
+    }
+  }
 
+  def toString1(l: List): String = {
+    l match {
+      case Cons(h, Nil()) => Std.intToString(h)
+      case Cons(h, t) => Std.intToString(h) ++ ", " ++ toString1(t)
+    }
+  }
+
+  ~This function returns the n first elements of a list
+  @param l a list
+  @param n the number of element wanted
+  @return the first n elements of the list
+  ~
   def take(l: List, n: Int): List = {
-    if (n <= 0) { Nil() }
-    else { 
+    if (n <= 0) {
+      Nil()
+    }
+    else {
       l match {
         case Nil() => Nil()
         case Cons(h, t) =>
-          Cons(h, take(t, n-1))
+          Cons(h, take(t, n - 1))
       }
     }
   }
-    
+
 }
