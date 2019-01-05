@@ -1,6 +1,6 @@
 # Amy-Compiler-Optimization
 ## Compiler for Amy language written in Scala
-This compiler has been developed during the Computer Language Processing course 2018 at EPFL.
+This compiler has been developed during the [Computer Language Processing course 2018](http://lara.epfl.ch/w/cc18:top) at EPFL.
 
 Current optimizations :
 
