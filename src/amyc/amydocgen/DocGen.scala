@@ -108,7 +108,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable), (S.Program, SymbolTable
           }
 
           //try to link to the module AND the function
-          generalDoc + "see [" + link + ".scala](" + mod + ".html5#" + fun.tail + ")" + parseDoc(follow, paramNames, currModule, currFun)
+          generalDoc + "see [" + link + "](" + mod + ".html#" + fun.tail + ")" + parseDoc(follow, paramNames, currModule, currFun)
 
         }
 
@@ -118,7 +118,7 @@ object DocGen extends Pipeline[(S.Program, SymbolTable), (S.Program, SymbolTable
             ctx.reporter.error("AmyDoc link doesn't match any existing module in function " + currFun + " in module " + currModule)
           }
 
-          generalDoc + "see [" + link + ".scala](" + link + ".html5)" + parseDoc(follow, paramNames, currModule, currFun)
+          generalDoc + "see [" + link + "](" + link + ".html)" + parseDoc(follow, paramNames, currModule, currFun)
         }
       }
 
