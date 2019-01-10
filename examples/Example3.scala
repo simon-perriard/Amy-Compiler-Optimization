@@ -36,7 +36,7 @@ object Example3 {
   }
 
   ~This is an implementation of the fast exponentiation algorithm.
-   This algorithm works in __O(log(n))__
+   This algorithm works in _O(log(n))_
   @param number the base
   @param power the power
   @return the result of the number^power
