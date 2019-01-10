@@ -60,7 +60,7 @@ object L {
   }
 
   ~Reverses a list and concatenate it after a second list
-  @param l the list to __**be reversed**__
+  @param l the list to _**be reversed**_
   @param acc the list that will come **before** the reversed list
   @return the first list reversed concatenated to the second list
   ~
