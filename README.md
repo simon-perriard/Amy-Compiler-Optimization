@@ -9,6 +9,7 @@ Current optimizations :
 ### AmyDoc
 The delimitters for AmyDoc are '~', it supports @param, @return and @see.
 It will generate .md files that will be processed by default by Pandoc.
+In order to generate the HTML files, run ```./mdTohtml.sh```, the out put will be in the ```amydoc```
 
 Usage example:  
 
