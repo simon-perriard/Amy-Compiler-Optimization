@@ -1,10 +1,11 @@
 object Example3 {
 
 
-  ~this function does fast exp
-  @param base hello
-  @param exp hedi
-  @param current & benito
+  ~
+  This is the (tail-recursive) helper function for the @see Example3.exp function
+  @param base the base of the power
+  @param exp the power
+  @param current the result of the previous computations
   ~
 
   def fastExp(base: Int, exp: Int, current: Int): Int = {
@@ -34,8 +35,11 @@ object Example3 {
 
   }
 
-  ~this one does succ
-  @see Std
+  ~This is an implementation of the fast exponentiation algorithm.
+   This algorithm works in __O(log(n))__
+  @param number the base
+  @param power the power
+  @return the result of the number^power
   ~
 
   def exp(number: Int, power: Int): Int = {
