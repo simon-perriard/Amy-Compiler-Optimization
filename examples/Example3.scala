@@ -60,3 +60,4 @@ object Example3 {
   Std.printString(answer)
 
 }
+
