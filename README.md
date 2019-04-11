@@ -4,7 +4,7 @@ This compiler has been developed during the [Computer Language Processing course
 
 Current optimizations :
 
-  - AmyDoc (in development)
+  - AmyDoc
   
 ### AmyDoc
 The delimitters for AmyDoc are '~', it supports @param, @return and @see.
